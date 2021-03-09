@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {Provider} from "react-redux"
+
+import Home from './Components/Home/Home'
+import Store from "./Store/index";
+import {clear_dice} from "./Store/Actions/Dice";
+
+const App = () => {
+    useEffect(()=>{Store.dispatch(clear_dice())},[])
+    return (
+        <Provider store={Store}>
+            <div>
+                <Home />
+            </div>
+        </Provider>
+    )
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <App/>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
