@@ -1,6 +1,7 @@
 import * as Types from "../Types/Types"
 const initialState = {
-    list: []
+    list: [],
+    sum: 0
 }
 
 export default function (state=initialState, action){
@@ -16,7 +17,15 @@ export default function (state=initialState, action){
         {
             return {
                 ...state,
-                list: []
+                list: [],
+                sum: 0
+            }
+        }
+        case Types.SUM:
+        {
+            return {
+                ...state,
+                sum: state.sum + action.payload
             }
         }
         default:

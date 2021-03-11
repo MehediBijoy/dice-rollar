@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import {connect} from "react-redux"
-import {Box, Button, Divider, makeStyles, Typography} from "@material-ui/core";
+import {Box, makeStyles, Typography} from "@material-ui/core";
 import Dice from "../Dice/Dice";
-import {add_dice, clear_dice} from "../../Store/Actions/Dice";
+import {add_dice, clear_dice, sum} from "../../Store/Actions/Dice";
 
 const useStyles = makeStyles({
     root: {
@@ -37,35 +37,33 @@ const useStyles = makeStyles({
 
 const Home = (props) => {
     const classes = useStyles()
-    const [sum, setSum] = useState(0)
     const rand = () => {
         return Math.floor(Math.random() * 6)
     }
 
     const addDiceHandler = () => {
         let random = rand()
-        setSum(sum+(random+1))
         props.add_dice(random)
+        props.sum(random+1)
     }
 
     const clearDiceHandler = () => {
         props.clear_dice()
-        setSum(0)
     }
 
     return (
         <Box className={classes.root}>
             <Box className={classes.container}>
                 <Typography variant="h1">Roll the Dice</Typography>
-                <Typography variant="h1">Sum = {`${sum}`}</Typography>
+                <Typography variant="h1">Sum = {`${props.value ? props.value : 0}`}</Typography>
                 <Box className={classes.containerBody}>
                     {props.list ? props.list.map((items, key) => (
                         <Dice item={items} key={key}/>
                     )) : null}
                 </Box>
                 <Box className={classes.containerBody}>
-                    <Button variant="contained" color="primary" size="large" onClick={addDiceHandler}>Roll Dice</Button>
-                    <Button variant="contained" color="secondary" size="large" onClick={clearDiceHandler}>Clear Dice</Button>
+                    <button className="btn btn-success btn-lg" onClick={addDiceHandler}>Roll Dice</button>
+                    <button className="btn btn-danger btn-lg" onClick={clearDiceHandler}>Clear Dice</button>
                 </Box>
             </Box>
         </Box>
@@ -74,8 +72,9 @@ const Home = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        list: state.list
+        list: state.list,
+        value: state.sum
     }
 }
 
-export default connect(mapStateToProps, {add_dice, clear_dice})(Home)
+export default connect(mapStateToProps, {add_dice, clear_dice, sum})(Home)

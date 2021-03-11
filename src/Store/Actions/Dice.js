@@ -13,3 +13,10 @@ export const clear_dice = () => dispatch => {
         payload: null
     })
 }
+
+export const sum = (value) => dispatch => (
+    dispatch({
+        type: Types.SUM,
+        payload: value
+    })
+)
